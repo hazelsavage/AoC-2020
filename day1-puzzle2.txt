@@ -1,0 +1,16 @@
+
+Example input:
+
+1721
+979
+366
+299
+675
+1456
+
+Find three numbers in your input file that meet the same criteria.
+
+Using example input, the three entries that sum to 2020 are 979, 366, and 675.
+Multiplying them together produces the answer, 241861950.
+
+In your expense report, what is the product of the three entries that sum to 2020?

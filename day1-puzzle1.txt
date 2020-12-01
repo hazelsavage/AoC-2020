@@ -1,0 +1,18 @@
+--- Day 1: Report Repair ---
+
+
+Example input:
+
+1721
+979
+366
+299
+675
+1456
+
+In this list, the two entries that sum to 2020 are 1721 and 299. Multiplying them together produces 1721 * 299 = 514579, so the correct answer is 514579.
+
+Find 2 entries in the puzzle input that sum to 2020. Multiply them to find the puzzle answer.
+
+
+
