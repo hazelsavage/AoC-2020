@@ -5,6 +5,8 @@ file = open('day1-input.txt', 'r')
 for line in file.readlines():
     seq.append(int(line.rstrip()))
 
+seq.sort()
+
 
 def summer(num1, num2, num3):
     msg_skip = "skipping..."
