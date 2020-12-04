@@ -73,7 +73,5 @@ def multiply(manyTrees):
 
 
 readInput("day3-input.txt", seq)
-manyTrees = checkManyTrees(slopes, seq)
-print(manyTrees)
-mult = multiply(manyTrees)
-print(msgMult % mult)
+
+print(msgMult % multiply(checkManyTrees(slopes, seq)))
