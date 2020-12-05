@@ -7,29 +7,29 @@ msgCheckValid = "Checking passport validity:"
 msgFieldSearch = "Searching for '%s' in '%s'..."
 msgValidRecords = "There are %d valid passport records.\n"
 
-# The validity functions are fine, but we are reading
-# in the data wrongly, as fields for each passport are spread
-# over several lines.
-
-# We need to split the data into passports as we read it in,
-# appending everything upto each newline as one record in our list.
-
 
 def readInput(file):
     seq = []
     file = open(file, "r")
     for line in file.readlines():
-        seq.append(line.rstrip())
+        seq.append(line)
     print(msgReadfile % len(seq))
     return seq
 
 
 def findData(seq):
     passports = []
+    passportTemp = []
     for item in seq:
-        if len(item) > 1:
+        if re.match(r'\b', item) is not None:
             match = re.findall(r'(\w{3}:[a-z0-9#]+)', item)
-            passports.append(match)
+            for group in match:
+                passportTemp.append(group)
+        else:
+            #print("Adding passport record: %s" % passportTemp)
+            passports.append(passportTemp)
+            passportTemp = []
+    passports.append(passportTemp)  # append the last one
     print(msgFindData % len(passports))
     return passports
 
@@ -61,18 +61,18 @@ def checkPassportFields(passport):
         # 'cid' #Country ID (expected but not currently required)
     ]
 
-    if len(passport) < 7:
+    if len(passport) < len(reqFields):
         valid = False
     else:
         for field in passport:
             for reqField in reqFields:
-                #print(msgFieldSearch % (reqField, field), end=" ")
+                #print(msgFieldSearch % (reqField, field))
                 match = field.find(reqField)
                 if match == 0:
                     count += 1
         if count == len(reqFields):
             valid = True
-    print(valid)
+    # print(valid)
     return valid
 
 
