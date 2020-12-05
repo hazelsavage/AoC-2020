@@ -28,7 +28,7 @@ testseq = [
 ]
 
 
-def readInput(file, list):
+def readInput(file):
     file = open(file, "r")
     for line in file.readlines():
         seq.append(line.rstrip())
@@ -72,6 +72,6 @@ def multiply(manyTrees):
     return mult
 
 
-readInput("day3-input.txt", seq)
+readInput("day3-input.txt")
 
 print(msgMult % multiply(checkManyTrees(slopes, seq)))
