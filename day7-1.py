@@ -29,11 +29,29 @@ exampleInput = [
 def grabData(records):
     rules = []
     for record in records:
-        split1 = record.split(' bags contain ')
-        for string in split1:
-            split2 = string.split(', ')
-            print(split2)
+        str_0 = record.split(' bags contain ')
+        container = str_0[0]
+        contents = str_0[1]
+        contents = grabData2(contents)
+        rule = [container, contents]
+        rules.append(rule)
     return rules
 
 
-grabData(exampleInput)
+def grabData2(contents):
+    contents = contents.split(', ')
+    newContents = {}
+    for content in contents:
+        newContent = content.split(' bag')[0]
+        if newContent == 'no other':
+            newContents['no other'] = 0
+        else:
+            matches = re.match(r'(\d+)\s(\w+\s\w+)', newContent)
+            groups = matches.groups()
+            newContents[groups[1]] = int(groups[0])
+    return newContents
+
+
+rules = grabData(exampleInput)
+for rule in rules:
+    print(rule)
