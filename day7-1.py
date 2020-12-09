@@ -1,35 +1,19 @@
 import re
 
-# read the rules in (there is one rule per line)
 
-# use regex to pickup the key information.
-
-# make a dictionary for each rule:
-# e.g. muted_lime {
-#   wavy_lime: 1,
-#   vibrant_green: 1
-#    light_yellow: 3
-# }
-
-# Then what...?
-
-exampleInput = [
-    'light red bags contain 1 bright white bag, 2 muted yellow bags.',
-    'dark orange bags contain 3 bright white bags, 4 muted yellow bags.',
-    'bright white bags contain 1 shiny gold bag.',
-    'muted yellow bags contain 2 shiny gold bags, 9 faded blue bags.',
-    'shiny gold bags contain 1 dark olive bag, 2 vibrant plum bags.',
-    'dark olive bags contain 3 faded blue bags, 4 dotted black bags.',
-    'vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.',
-    'faded blue bags contain no other bags.',
-    'dotted black bags contain no other bags.'
-]
+def readInput(file):
+    seq = []
+    file = open(file, "r")
+    for line in file.readlines():
+        seq.append(line)
+    print(f'\n{len(seq)} lines read in.')
+    return seq
 
 
-def grabData(records):
+def grabData(seq):
     rules = []
-    for record in records:
-        str_0 = record.split(' bags contain ')
+    for line in seq:
+        str_0 = line.split(' bags contain ')
         container = str_0[0]
         contents = str_0[1]
         contents = grabData2(contents)
@@ -52,6 +36,34 @@ def grabData2(contents):
     return newContents
 
 
-rules = grabData(exampleInput)
-for rule in rules:
-    print(rule)
+def countAllContainers(bag, rules):
+    count = 0
+    oldCount = None
+    bag2 = None
+    loopNum = 0
+    while (count != oldCount):  # did the counter increase - i.e., did we find a new instance last time?
+        oldCount = count
+        loopNum += 1
+        print(f'\nloop {loopNum}:')
+        if bag2 != None:
+            bag = bag2
+        print(f'searching for {bag} bag:')
+        for rule in rules:
+            if bag in rule[1]:  # is the bag in the dictionary for this container rule?
+                print(rule)
+                count += 1
+                # search for the container bag in other containers' dictionaries next time.
+                bag2 = rule[0]
+    return count
+
+    # at present, subsequent loops of the above function only look for
+    # the most recent container bag, and so our answer is wrong!
+    # We need a list of container bags and too look for all of them, one at a time.
+    # (And to take each one off the list when we're done looking for that one.)
+
+
+seq = readInput('day7-input.txt')
+rules = grabData(seq)
+bag = 'shiny gold'
+count = countAllContainers(bag, rules)
+print(f'\n{count} bags can eventually contain at least one {bag} bag.\n')
