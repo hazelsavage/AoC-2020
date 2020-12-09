@@ -36,34 +36,42 @@ def grabData2(contents):
     return newContents
 
 
-def countAllContainers(bag, rules):
-    count = 0
-    oldCount = None
-    bag2 = None
-    loopNum = 0
-    while (count != oldCount):  # did the counter increase - i.e., did we find a new instance last time?
-        oldCount = count
-        loopNum += 1
-        print(f'\nloop {loopNum}:')
-        if bag2 != None:
-            bag = bag2
-        print(f'searching for {bag} bag:')
-        for rule in rules:
-            if bag in rule[1]:  # is the bag in the dictionary for this container rule?
-                print(rule)
-                count += 1
-                # search for the container bag in other containers' dictionaries next time.
-                bag2 = rule[0]
-    return count
+def countContainers(bag, rules):
+    bags = [bag]
+    allowedBags = []
+    while (bags):
+        for bag in bags:
+            moreBags = countContainers2(bag, rules)
+            if moreBags:
+                for container in moreBags:
+                    if container not in allowedBags:
+                        print(
+                            f'Adding \'{container}\' to search list and allowed list.')
+                        bags.append(container)
+                        allowedBags.append(container)
+                    else:
+                        print(f'\'{container}\' was already seen/added.')
+            print(f'Removing \'{bag}\' from search list.')
+            bags.remove(bag)
+            print(f'Running total is {len(allowedBags)}.\n')
+    return len(allowedBags)
 
-    # at present, subsequent loops of the above function only look for
-    # the most recent container bag, and so our answer is wrong!
-    # We need a list of container bags and too look for all of them, one at a time.
-    # (And to take each one off the list when we're done looking for that one.)
+
+def countContainers2(bag, rules):
+    moreBags = []
+    bagCount = 0
+    print(f'\nSearching for \'{bag}\'...')
+    for rule in rules:
+        if bag in rule[1]:
+            bagCount += 1
+            moreBags.append(rule[0])
+    if bagCount != 0:
+        print(f'Found {bagCount} instances of \'{bag}\' as contents.')
+        return moreBags
 
 
 seq = readInput('day7-input.txt')
 rules = grabData(seq)
 bag = 'shiny gold'
-count = countAllContainers(bag, rules)
+count = countContainers(bag, rules)
 print(f'\n{count} bags can eventually contain at least one {bag} bag.\n')
