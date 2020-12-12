@@ -1,0 +1,32 @@
+--- Part Two - --
+Find a contiguous set of at two or more numbers
+in your list which sum to the invalid number from step 1.
+
+Again consider the above example:
+
+35
+20
+15
+25
+47
+40
+62
+55
+65
+95
+102
+117
+150
+182
+127
+219
+299
+277
+309
+576
+
+In this list, adding up all of the numbers
+from 15 through 40 produces the invalid
+number from step 1, 127.
+
+What is sum of the smallest and largest numbers in this range?
